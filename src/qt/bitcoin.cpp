@@ -58,6 +58,10 @@
 #include <QTimer>
 #include <QTranslator>
 
+#if defined(Q_OS_WIN)
+#include <windows.h>
+#endif
+
 #if defined(QT_STATICPLUGIN)
 #include <QtPlugin>
 #if QT_VERSION < 0x050400
@@ -518,6 +522,16 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName(QAPP_ORG_NAME);
     QApplication::setOrganizationDomain(QAPP_ORG_DOMAIN);
     QApplication::setApplicationName(QAPP_APP_NAME_DEFAULT);
+
+#if defined(Q_OS_WIN)
+    // Set AppUserModelID so Windows 7/8/10/11 routes notifications to the Action / Notification Center
+    typedef HRESULT (WINAPI *PSETCURRENTPROCEXPLICITAPPUSERMODELID)(PCWSTR);
+    PSETCURRENTPROCEXPLICITAPPUSERMODELID setAppUserModelID =
+        (PSETCURRENTPROCEXPLICITAPPUSERMODELID)GetProcAddress(GetModuleHandleA("shell32.dll"), "SetCurrentProcessExplicitAppUserModelID");
+    if (setAppUserModelID) {
+        setAppUserModelID(L"Megacoin.MegacoinQt");
+    }
+#endif
 
     /// 4. Initialization of translations, so that intro dialog is in user's language
     // Now that QSettings are accessible, initialize translations
