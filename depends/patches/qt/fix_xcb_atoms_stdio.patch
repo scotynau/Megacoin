@@ -1,0 +1,10 @@
+--- a/qtbase/src/plugins/platforms/xcb/xcb-static/atoms.c
++++ b/qtbase/src/plugins/platforms/xcb/xcb-static/atoms.c
+@@ -26,6 +26,7 @@
+ #include <config.h>
+ #endif
+ 
++#include <stdio.h>
+ #include <assert.h>
+ #include <stdlib.h>
+ #include <string.h>
