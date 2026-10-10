@@ -1,14 +1,14 @@
 Benchmarking
 ============
 
-Bitcoin Core has an internal benchmarking framework, with benchmarks
-for cryptographic algorithms (e.g. SHA1, SHA256, SHA512, RIPEMD160), as well as the rolling bloom filter.
+Megacoin Core has an internal benchmarking framework, with benchmarks
+for cryptographic algorithms (e.g. SHA1, SHA256, SHA512, RIPEMD160), as well as rolling bloom filters and script validation.
 
 Running
 ---------------------
-After compiling bitcoin-core, the benchmarks can be run with:
+After compiling Megacoin Core, the benchmarks can be run with:
 
-    src/bench/bench_bitcoin
+    src/bench/bench_megacoin
 
 The output will look similar to:
 ```
@@ -43,13 +43,4 @@ Help
 ---------------------
 `-?` will print a list of options and exit:
 
-    src/bench/bench_bitcoin -?
-
-Notes
----------------------
-More benchmarks are needed for, in no particular order:
-- Script Validation
-- CCoinDBView caching
-- Coins database
-- Memory pool
-- Wallet coin selection
+    src/bench/bench_megacoin -?

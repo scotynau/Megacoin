@@ -1,8 +1,8 @@
 FreeBSD build guide
 ======================
-(updated for FreeBSD 11.1)
+(updated for FreeBSD 11.x+)
 
-This guide describes how to build bitcoind and command-line utilities on FreeBSD.
+This guide describes how to build `megacoind` and command-line utilities on FreeBSD.
 
 This guide does not contain instructions for building the GUI.
 
@@ -24,10 +24,10 @@ See [dependencies.md](dependencies.md) for a complete overview.
 
 Download the source code:
 ```
-git clone https://github.com/bitcoin/bitcoin
+git clone https://github.com/LIMXTEC/Megacoin.git
 ```
 
-## Building Bitcoin Core
+## Building Megacoin Core
 
 **Important**: Use `gmake` (the non-GNU `make` will exit with an error).
 
@@ -40,7 +40,4 @@ git clone https://github.com/bitcoin/bitcoin
 gmake
 ```
 
-*Note on debugging*: The version of `gdb` installed by default is [ancient and considered harmful](https://wiki.freebsd.org/GdbRetirement).
-It is not suitable for debugging a multi-threaded C++ program, not even for getting backtraces. Please install the package `gdb` and
-use the versioned gdb command (e.g. `gdb7111`).
-
+*Note on debugging*: The version of `gdb` installed by default is ancient. Please install the package `gdb` and use the versioned gdb command if needed.

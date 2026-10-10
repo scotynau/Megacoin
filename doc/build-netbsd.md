@@ -1,8 +1,8 @@
 NetBSD build guide
 ======================
-(updated for NetBSD 8.0)
+(updated for NetBSD 8.0+)
 
-This guide describes how to build bitcoind and command-line utilities on NetBSD.
+This guide describes how to build `megacoind` and command-line utilities on NetBSD.
 
 This guide does not contain instructions for building the GUI.
 
@@ -22,7 +22,7 @@ libtool
 pkg-config
 python37
 
-git clone https://github.com/bitcoin/bitcoin.git
+git clone https://github.com/LIMXTEC/Megacoin.git
 ```
 
 See [dependencies.md](dependencies.md) for a complete overview.
@@ -32,10 +32,7 @@ See [dependencies.md](dependencies.md) for a complete overview.
 BerkeleyDB is only necessary for the wallet functionality. To skip this, pass
 `--disable-wallet` to `./configure` and skip to the next section.
 
-It is recommended to use Berkeley DB 4.8. You cannot use the BerkeleyDB library
-from ports, for the same reason as boost above (g++/libstd++ incompatibility).
-If you have to build it yourself, you can use [the installation script included
-in contrib/](/contrib/install_db4.sh) like so:
+It is recommended to use Berkeley DB 4.8. If you have to build it yourself, you can use [the installation script included in contrib/](/contrib/install_db4.sh) like so:
 
 ```shell
 ./contrib/install_db4.sh `pwd`
@@ -47,7 +44,7 @@ from the root of the repository. Then set `BDB_PREFIX` for the next section:
 export BDB_PREFIX="$PWD/db4"
 ```
 
-### Building Bitcoin Core
+### Building Megacoin Core
 
 **Important**: Use `gmake` (the non-GNU `make` will exit with an error).
 

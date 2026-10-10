@@ -1,7 +1,7 @@
 # Official Debian Trixie base image
 FROM debian:trixie-slim
 
-LABEL maintainer="Megacoin Developers <info@megacoin.eu>"
+LABEL maintainer="Megacoin Developers <info@megacoin-mec.cc>"
 LABEL description="Official Megacoin Daemon Docker image (amd64 / x86_64, Debian Trixie)"
 
 # Install runtime dependencies

@@ -1,86 +1,56 @@
-Bitcoin Core version 0.17.x is now available from:
+Megacoin Core version 1.10.0 is now available from:
 
-  <https://bitcoincore.org/bin/bitcoin-core-0.17.x/>
+  <https://github.com/LIMXTEC/Megacoin/releases/tag/v1.10.0>
 
-This is a new minor version release, including new features, various bugfixes
-and performance improvements, as well as updated translations.
+This is a major release of Megacoin Core, introducing a soft-fork for Masternode payment enforcement, security enhancements, compatibility with modern compiler toolchains (GCC 11–14, Boost 1.76+), and updated build dependencies.
 
 Please report bugs using the issue tracker at GitHub:
 
-  <https://github.com/bitcoin/bitcoin/issues>
-
-To receive security and update notifications, please subscribe to:
-
-  <https://bitcoincore.org/en/list/announcements/join/>
+  <https://github.com/LIMXTEC/Megacoin/issues>
 
 How to Upgrade
 ==============
 
-If you are running an older version, shut it down. Wait until it has completely
-shut down (which might take a few minutes for older versions), then run the
-installer (on Windows) or just copy over `/Applications/Bitcoin-Qt` (on Mac)
-or `bitcoind`/`bitcoin-qt` (on Linux).
-
-If your node has a txindex, the txindex db will be migrated the first time you
-run 0.17.0 or newer, which may take up to a few hours. Your node will not be
-functional until this migration completes.
-
-The first time you run version 0.15.0 or newer, your chainstate database will be converted to a
-new format, which will take anywhere from a few minutes to half an hour,
-depending on the speed of your machine.
-
-Note that the block database format also changed in version 0.8.0 and there is no
-automatic upgrade code from before version 0.8 to version 0.15.0. Upgrading
-directly from 0.7.x and earlier without redownloading the blockchain is not supported.
-However, as usual, old wallet versions are still supported.
-
-Downgrading warning
--------------------
-
-The chainstate database for this release is not compatible with previous
-releases, so if you run 0.15 and then decide to switch back to any
-older version, you will need to run the old release with the `-reindex-chainstate`
-option to rebuild the chainstate data structures in the old format.
-
-If your node has pruning enabled, this will entail re-downloading and
-processing the entire blockchain.
+If you are running an older version (1.9.9.x or earlier), shut it down completely. Wait until it has completely shut down, then replace your binaries with the new `megacoind`, `megacoin-qt`, `megacoin-cli`, and `megacoin-tx` executables or run the installer (Windows).
 
 Compatibility
 ==============
 
-Bitcoin Core is extensively tested on multiple operating systems using
-the Linux kernel, macOS 10.10+, and Windows 7 and newer (Windows XP is not supported).
+Megacoin Core is tested on multiple operating systems including Linux (x86_64, AArch64), Windows 7+ (64-bit), and macOS.
 
-Bitcoin Core should also work on most other Unix-like systems but is not
-frequently tested on them.
+Notable Changes in 1.10.0
+=========================
 
-From 0.17.0 onwards macOS <10.10 is no longer supported. 0.17.0 is built using Qt 5.9.x, which doesn't
-support versions of macOS older than 10.10.
+Masternode Payment Enforcement Soft-Fork (BIP9)
+-----------------------------------------------
+- Implemented a BIP9 soft-fork mechanism for strict Masternode payment enforcement.
+- Nodes enforce valid Masternode payment targets in block templates upon soft-fork activation.
+- Peers sending blocks with invalid Masternode payments are banned with DoS score 100.
+- Spent Masternodes are automatically purged on block tip updates to maintain accurate network state.
 
-Notable changes
-===============
+Consensus & Feature Flags
+-------------------------
+- SegWit and CSV soft-forks are configured as ALWAYS_ACTIVE with no timeout bans, ensuring perpetual availability of SegWit and Bech32 address support (`mex1...`).
+- Fixed `setBlockIndexCandidates` sanitization in `RewindBlockIndex` to prevent `nChainTx` assertion crashes during chain reorganizations.
 
-Documentation
--------------
+Toolchain & Dependency Updates
+------------------------------
+- Modern C++ Compiler Support: Resolved compilation issues with GCC 11, GCC 12, GCC 13, and GCC 14.
+- Boost 1.76+ Compatibility: Updated signals2 syntax, added missing `<deque>` and `<array>` includes.
+- Depends System Overhaul:
+  - Boost updated to 1.76.0.
+  - ZeroMQ updated to 4.3.4.
+  - Qt updated to 5.9.6 with MinGW `tagTOUCHINPUT` redefinition fixes and `fix_numeric_limits` patch.
+  - BDB patched for AArch64 mutex preprocessor syntax.
+  - Added `libbcrypt` dependency and `gmtime_s` fixes for MinGW Windows builds.
+  - Fixed `xcb_proto` staging on Python 3.12+ build environments.
 
-- A new document introduces Bitcoin Core's BIP174
-  [Partially-Signed Bitcoin Transactions (PSBT)](https://github.com/bitcoin/bitcoin/blob/0.17/doc/psbt.md)
-  interface, which is used to allow multiple programs to collaboratively
-  work to create, sign, and broadcast new transactions.  This is useful
-  for offline (cold storage) wallets, multisig wallets, coinjoin
-  implementations, and many other cases where two or more programs need
-  to interact to generate a complete transaction.
-
-0.17.x change log
-=================
-
-(todo)
+Network & Seed Nodes
+--------------------
+- Updated seed node list and DNS seeds for faster peer discovery.
+- MiniUPnPc library updated to 2.2.8.
 
 Credits
 =======
 
-Thanks to everyone who directly contributed to this release:
-
-(todo)
-
-As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/bitcoin/).
+Thanks to all contributors who helped test and develop Megacoin Core 1.10.0.

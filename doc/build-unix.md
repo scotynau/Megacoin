@@ -1,12 +1,12 @@
 UNIX BUILD NOTES
 ====================
-Some notes on how to build Bitcoin Core in Unix.
+Some notes on how to build Megacoin Core in Unix.
 
 (For BSD specific instructions, see `build-*bsd.md` in this directory.)
 
 Note
 ---------------------
-Always use absolute paths to configure and compile Bitcoin Core and the dependencies,
+Always use absolute paths to configure and compile Megacoin Core and the dependencies,
 for example, when specifying the path of the dependency:
 
 	../dist/configure --enable-cxx --disable-shared --with-pic --prefix=$BDB_PREFIX
@@ -24,7 +24,7 @@ make
 make install # optional
 ```
 
-This will build bitcoin-qt as well if the dependencies are met.
+This will build `megacoin-qt` as well if the GUI dependencies are met.
 
 Dependencies
 ---------------------
@@ -55,7 +55,7 @@ Memory Requirements
 --------------------
 
 C++ compilers are memory-hungry. It is recommended to have at least 1.5 GB of
-memory available when compiling Bitcoin Core. On systems with less, gcc can be
+memory available when compiling Megacoin Core. On systems with less, gcc can be
 tuned to conserve memory with additional CXXFLAGS:
 
 
@@ -72,22 +72,13 @@ Build requirements:
 
     sudo apt-get install build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils python3 libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev
 
-BerkeleyDB is required for the wallet.
-
-**For Ubuntu only:** db4.8 packages are available [here](https://launchpad.net/~bitcoin/+archive/bitcoin).
-You can add the repository and install using the following commands:
-
-    sudo apt-get install software-properties-common
-    sudo add-apt-repository ppa:bitcoin/bitcoin
-    sudo apt-get update
-    sudo apt-get install libdb4.8-dev libdb4.8++-dev
+BerkeleyDB 4.8 is required for wallet backward compatibility.
 
 Ubuntu and Debian have their own libdb-dev and libdb++-dev packages, but these will install
-BerkeleyDB 5.1 or later, which break binary wallet compatibility with the distributed executables which
-are based on BerkeleyDB 4.8. If you do not care about wallet compatibility,
+BerkeleyDB 5.1 or later, which break binary wallet compatibility with executables based on BerkeleyDB 4.8. If you do not care about wallet compatibility,
 pass `--with-incompatible-bdb` to configure.
 
-See the section "Disable-wallet mode" to build Bitcoin Core without wallet.
+See the section "Disable-wallet mode" to build Megacoin Core without wallet.
 
 Optional (see --with-miniupnpc and --enable-upnp-default):
 
@@ -99,7 +90,7 @@ ZMQ dependencies (provides ZMQ API 4.x):
 
 #### Dependencies for the GUI
 
-If you want to build bitcoin-qt, make sure that the required packages for Qt development
+If you want to build `megacoin-qt`, make sure that the required packages for Qt development
 are installed. Qt 5 is necessary to build the GUI.
 To build without GUI pass `--without-gui`.
 
@@ -111,7 +102,7 @@ libqrencode (optional) can be installed with:
 
     sudo apt-get install libqrencode-dev
 
-Once these are installed, they will be found by configure and a bitcoin-qt executable will be
+Once these are installed, they will be found by configure and a `megacoin-qt` executable will be
 built by default.
 
 
@@ -137,16 +128,15 @@ libqrencode (optional) can be installed with:
 
 Notes
 -----
-The release is built with GCC and then "strip bitcoind" to strip the debug
+The release is built with GCC and then `strip megacoind` to strip the debug
 symbols, which reduces the executable size by about 90%.
 
 
 miniupnpc
 ---------
 
-[miniupnpc](http://miniupnp.free.fr/) may be used for UPnP port mapping.  It can be downloaded from [here](
-http://miniupnp.tuxfamily.org/files/).  UPnP support is compiled in and
-turned off by default.  See the configure options for upnp behavior desired:
+[miniupnpc](http://miniupnp.free.fr/) may be used for UPnP port mapping. UPnP support is compiled in and
+turned off by default. See the configure options for upnp behavior desired:
 
 	--without-miniupnpc      No UPnP support miniupnp not required
 	--disable-upnp-default   (the default) UPnP support turned off by default at runtime
@@ -178,7 +168,7 @@ If you need to build Boost yourself:
 
 Security
 --------
-To help make your Bitcoin Core installation more secure by making certain attacks impossible to
+To help make your Megacoin Core installation more secure by making certain attacks impossible to
 exploit even if a vulnerability is found, binaries are hardened by default.
 This can be disabled with:
 
@@ -194,15 +184,10 @@ Hardening enables the following features:
     Build position independent code to take advantage of Address Space Layout Randomization
     offered by some kernels. Attackers who can cause execution of code at an arbitrary memory
     location are thwarted if they don't know where anything useful is located.
-    The stack and heap are randomly located by default, but this allows the code section to be
-    randomly located as well.
 
-    On an AMD64 processor where a library was not compiled with -fPIC, this will cause an error
-    such as: "relocation R_X86_64_32 against `......' can not be used when making a shared object;"
+    To test that you have built a PIE executable, install scanelf, part of paxutils, and use:
 
-    To test that you have built PIE executable, install scanelf, part of paxutils, and use:
-
-    	scanelf -e ./bitcoin
+    	scanelf -e ./megacoind
 
     The output should contain:
 
@@ -211,13 +196,10 @@ Hardening enables the following features:
 
 * Non-executable Stack
     If the stack is executable then trivial stack-based buffer overflow exploits are possible if
-    vulnerable buffers are found. By default, Bitcoin Core should be built with a non-executable stack,
-    but if one of the libraries it uses asks for an executable stack or someone makes a mistake
-    and uses a compiler extension which requires an executable stack, it will silently build an
-    executable without the non-executable stack protection.
+    vulnerable buffers are found. By default, Megacoin Core should be built with a non-executable stack.
 
     To verify that the stack is non-executable after compiling use:
-    `scanelf -e ./bitcoin`
+    `scanelf -e ./megacoind`
 
     The output should contain:
 	STK/REL/PTL
@@ -227,7 +209,7 @@ Hardening enables the following features:
 
 Disable-wallet mode
 --------------------
-When the intention is to run only a P2P node without a wallet, Bitcoin Core may be compiled in
+When the intention is to run only a P2P node without a wallet, Megacoin Core may be compiled in
 disable-wallet mode with:
 
     ./configure --disable-wallet
@@ -235,7 +217,7 @@ disable-wallet mode with:
 In this case there is no dependency on Berkeley DB 4.8.
 
 Mining is also possible in disable-wallet mode, but only using the `getblocktemplate` RPC
-call not `getwork`.
+call.
 
 Additional Configure Flags
 --------------------------
@@ -249,18 +231,11 @@ Setup and Build Example: Arch Linux
 This example lists the steps necessary to setup and build a command line only, non-wallet distribution of the latest changes on Arch Linux:
 
     pacman -S git base-devel boost libevent python
-    git clone https://github.com/bitcoin/bitcoin.git
-    cd bitcoin/
+    git clone https://github.com/LIMXTEC/Megacoin.git
+    cd Megacoin/
     ./autogen.sh
     ./configure --disable-wallet --without-gui --without-miniupnpc
     make check
-
-Note:
-Enabling wallet support requires either compiling against a Berkeley DB newer than 4.8 (package `db`) using `--with-incompatible-bdb`,
-or building and depending on a local version of Berkeley DB 4.8. The readily available Arch Linux packages are currently built using
-`--with-incompatible-bdb` according to the [PKGBUILD](https://projects.archlinux.org/svntogit/community.git/tree/bitcoin/trunk/PKGBUILD).
-As mentioned above, when maintaining portability of the wallet between the standard Bitcoin Core distributions and independently built
-node software is desired, Berkeley DB 4.8 must be used.
 
 
 ARM Cross-compilation
@@ -283,6 +258,4 @@ To build executables for ARM:
     ./configure --prefix=$PWD/depends/arm-linux-gnueabihf --enable-glibc-back-compat --enable-reduce-exports LDFLAGS=-static-libstdc++
     make
 
-
 For further documentation on the depends system see [README.md](../depends/README.md) in the depends directory.
-

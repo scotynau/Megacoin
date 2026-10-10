@@ -20,7 +20,7 @@ Dependencies
 
 See [dependencies.md](dependencies.md) for a complete overview.
 
-If you want to build the disk image with `make deploy` (.dmg / optional), you need RSVG
+If you want to build the disk image with `make deploy` (.dmg / optional), you need RSVG:
 
     brew install librsvg
 
@@ -36,19 +36,19 @@ like so
 
 from the root of the repository.
 
-**Note**: You only need Berkeley DB if the wallet is enabled (see the section *Disable-Wallet mode* below).
+**Note**: You only need Berkeley DB if the wallet is enabled.
 
-Build Bitcoin Core
-------------------------
+Build Megacoin Core
+-------------------
 
-1. Clone the Bitcoin Core source code and cd into `bitcoin`
+1. Clone the Megacoin Core source code and cd into `Megacoin`
 
-        git clone https://github.com/bitcoin/bitcoin
-        cd bitcoin
+        git clone https://github.com/LIMXTEC/Megacoin.git
+        cd Megacoin
 
-2.  Build Bitcoin Core:
+2. Build Megacoin Core:
 
-    Configure and build the headless Bitcoin Core binaries as well as the GUI (if Qt is found).
+    Configure and build the headless Megacoin Core binaries as well as the GUI (if Qt is found).
 
     You can disable the GUI build by passing `--without-gui` to configure.
 
@@ -56,41 +56,34 @@ Build Bitcoin Core
         ./configure
         make
 
-3.  It is recommended to build and run the unit tests:
+3. It is recommended to build and run the unit tests:
 
         make check
 
-4.  You can also create a .dmg that contains the .app bundle (optional):
+4. You can also create a .dmg that contains the .app bundle (optional):
 
         make deploy
 
 Running
 -------
 
-Bitcoin Core is now available at `./src/bitcoind`
+Megacoin Core is now available at `./src/megacoind` and `./src/qt/megacoin-qt`.
 
-Before running, it's recommended that you create an RPC configuration file.
+Before running, it's recommended that you create an RPC configuration file:
 
-    echo -e "rpcuser=bitcoinrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/Bitcoin/bitcoin.conf"
+    mkdir -p "/Users/${USER}/Library/Application Support/Megacoin/"
+    echo -e "rpcuser=megacoinrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/Megacoin/megacoin.conf"
+    chmod 600 "/Users/${USER}/Library/Application Support/Megacoin/megacoin.conf"
 
-    chmod 600 "/Users/${USER}/Library/Application Support/Bitcoin/bitcoin.conf"
-
-The first time you run bitcoind, it will start downloading the blockchain. This process could take several hours.
+The first time you run `megacoind`, it will start downloading the blockchain.
 
 You can monitor the download process by looking at the debug.log file:
 
-    tail -f $HOME/Library/Application\ Support/Bitcoin/debug.log
+    tail -f "$HOME/Library/Application Support/Megacoin/debug.log"
 
 Other commands:
 -------
 
-    ./src/bitcoind -daemon # Starts the bitcoin daemon.
-    ./src/bitcoin-cli --help # Outputs a list of command-line options.
-    ./src/bitcoin-cli help # Outputs a list of RPC commands when the daemon is running.
-
-Notes
------
-
-* Tested on OS X 10.10 Yosemite through macOS 10.13 High Sierra on 64-bit Intel processors only.
-
-* Building with downloaded Qt binaries is not officially supported. See the notes in [#7714](https://github.com/bitcoin/bitcoin/issues/7714)
+    ./src/megacoind -daemon # Starts the Megacoin daemon.
+    ./src/megacoin-cli --help # Outputs a list of command-line options.
+    ./src/megacoin-cli help # Outputs a list of RPC commands when the daemon is running.
