@@ -1,0 +1,28 @@
+# Build context exclusions — the runtime Dockerfile only needs:
+#   - docker/ (entrypoint, compose, Dockerfile)
+#   - megacoin-release-1.10.0-linux-x86_64/ (amd64 runtime binaries)
+# Everything else (sources, depends builds, VCS, release archives) is excluded.
+
+.git
+.github
+.codegraph
+
+# Static dependency build tree (huge, not needed at runtime)
+depends/
+
+# Compiled sources / build artifacts
+src/
+qa/
+doc/
+contrib/
+test/
+share/
+build-aux/
+m4/
+release_aarch64/
+
+# Release archives
+*.7z
+*.tar.gz
+*.zip
+*.tar.xz
